@@ -6,7 +6,7 @@ const router = require("./routes/router");
 const MongoClient = require("mongodb").MongoClient;
 
 // Connection URL
-const url = "mongodb://localhost:27017/";
+const url = "mongodb://localhost:27017";
 
 // Database Name
 const dbName = "stoked_db";
@@ -14,17 +14,17 @@ const dbName = "stoked_db";
 // Create a new MongoClient
 const client = new MongoClient(url);
 
-console.log("Connecting to MongoDB...");
-
 // Middleware to attach db to request
 app.use((req, res, next) => {
   client
     .connect()
     .then(() => {
       req.db = client.db(dbName);
+      console.log("Connected to MongoDB...");
       next();
     })
     .catch((err) => {
+      console.log("Error connecting to MongoDB:", err);
       next(err);
     });
 });

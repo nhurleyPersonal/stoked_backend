@@ -4,5 +4,6 @@ const router = express.Router();
 const userController = require("../controllers/userController"); // Import the userController
 
 router.post("/register", userController.register); // Use the register function from the userController
+router.post("/login", userController.login); // Use the login function from the userController
 
 module.exports = router;
