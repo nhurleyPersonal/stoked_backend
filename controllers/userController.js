@@ -5,89 +5,103 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/userModel"); // Adjust the path according to your project structure
 const secret = "supersecretkey"; // Replace with your own secret key
 
-const register = (req, res) => {
+const register = async (req, res) => {
   const { email, password, firstName, lastName, username } = req.body;
-  console.log(req.body);
 
   if (!email || !password) {
     return res.status(400).json({ error: "email and password are required" });
   }
 
-  // Hash the password
-  bcrypt
-    .hash(password, saltRounds)
-    .then((hash) => {
-      const db = req.db;
-      const collection = db.collection("users");
+  try {
+    // Check if a user with the same email or username already exists
+    const existingUser = await User.findOne({ $or: [{ email }, { username }] });
+    if (existingUser) {
+      return res
+        .status(400)
+        .json({ error: "A user with this email or username already exists" });
+    }
 
-      // Insert a user with the hashed password
-      const user = new User({
-        email,
-        password: hash,
-        username,
-        firstName,
-        lastName,
-      });
-      return collection.insertOne(user);
-    })
-    .then((result) => {
-      // Generate a JWT
-      const token = jwt.sign({ id: result.insertedId, email }, secret, {
-        expiresIn: "30d",
-      });
+    // Hash the password
+    const hash = await bcrypt.hash(password, saltRounds);
 
-      // Respond with a success message and the JWT
-      res.status(201).json({ message: "User registered successfully", token });
-    })
-    .catch((err) => {
-      console.error("Error connecting to MongoDB:", err);
-      res.status(500).json({ error: err });
+    // Create a new user with the hashed password
+    const user = new User({
+      email,
+      password: hash,
+      username,
+      firstName,
+      lastName,
     });
+
+    // Save the user to the database
+    const savedUser = await user.save();
+
+    // Generate a JWT
+    const token = jwt.sign({ id: savedUser._id, email }, secret, {
+      expiresIn: "30d",
+    });
+
+    // Respond with a success message and the JWT
+    res.status(201).json({
+      message: "User registered successfully",
+      token,
+      userID: savedUser._id,
+      email: savedUser.email,
+      firstName: savedUser.firstName,
+      lastName: savedUser.lastName,
+      username: savedUser.username,
+    });
+  } catch (err) {
+    console.error("Error:", err);
+    res.status(500).json({ error: err });
+  }
 };
 
-const login = (req, res) => {
+const login = async (req, res) => {
   const { email, password } = req.body;
-  console.log(req.body);
-  const db = req.db;
-  const collection = db.collection("users");
 
   if (!email || !password) {
     return res.status(400).json({ error: "email and password are required" });
   }
 
-  // Find the user by email
-  collection
-    .findOne({ email })
-    .then((user) => {
-      if (!user) {
-        return res
-          .status(400)
-          .json({ error: "Email and Password do not match any current users" });
-      }
+  try {
+    // Find the user by email
+    const user = await User.findOne({ email });
 
-      // Compare the password
-      return bcrypt.compare(password, user.password).then((match) => {
-        if (!match) {
-          return res
-            .status(400)
-            .json({
-              error: "Email and Password do not match any current users",
-            });
-        }
+    if (!user) {
+      return res
+        .status(400)
+        .json({ error: "Email and Password do not match any current users" });
+    }
 
-        // Generate a JWT
-        const token = jwt.sign({ id: user._id, email }, secret, {
-          expiresIn: "30d",
-        });
+    // Compare the password
+    const match = await bcrypt.compare(password, user.password);
 
-        // Respond with a success message and the JWT
-        res.status(200).json({ message: "User logged in successfully", token });
-      });
-    })
-    .catch((err) => {
-      console.error("Error connecting to MongoDB:", err);
-      res.status(500).json({ error: err });
+    if (!match) {
+      return res
+        .status(400)
+        .json({ error: "Email and Password do not match any current users" });
+    }
+
+    // Generate a JWT
+    const token = jwt.sign({ id: user._id, email }, secret, {
+      expiresIn: "30d",
     });
+
+    // Respond with a success message and the JWT
+    res.status(200).json({
+      message: "User logged in successfully",
+      token,
+      userID: user._id,
+      email: user.email,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      username: user.username,
+    });
+  } catch (err) {
+    console.error("Error:", err);
+    res.status(500).json({ error: err });
+  }
 };
 
 module.exports = {

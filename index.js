@@ -4,15 +4,16 @@ const port = process.env.PORT || 5001;
 const cors = require("cors");
 const router = require("./routes/router");
 const MongoClient = require("mongodb").MongoClient;
+const mongoose = require("mongoose");
 
 // Connection URL
-const url = "mongodb://localhost:27017";
+const dburl = "mongodb://localhost:27017/stoked_db";
 
 // Database Name
 const dbName = "stoked_db";
 
 // Create a new MongoClient
-const client = new MongoClient(url);
+const client = new MongoClient(dburl);
 
 // Middleware to attach db to request
 app.use((req, res, next) => {
@@ -28,6 +29,8 @@ app.use((req, res, next) => {
       next(err);
     });
 });
+
+mongoose.connect(dburl, { useNewUrlParser: true, useUnifiedTopology: true });
 
 app.use(cors());
 app.use(express.json());
