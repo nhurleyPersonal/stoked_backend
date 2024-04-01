@@ -104,7 +104,31 @@ const login = async (req, res) => {
   }
 };
 
+const getUser = async (req, res) => {
+  try {
+    // Get the token from the Authorization header
+    const token = req.headers.authorization.split(" ")[1];
+
+    // Verify the token
+    const decoded = jwt.verify(token, secret);
+
+    // Find the user by ID
+    const user = await User.findById(decoded.id).select("-password");
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Send the user data
+    res.json(user);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
 module.exports = {
   register,
   login,
+  getUser,
 };

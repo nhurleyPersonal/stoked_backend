@@ -21,7 +21,6 @@ app.use((req, res, next) => {
     .connect()
     .then(() => {
       req.db = client.db(dbName);
-      console.log("Connected to MongoDB...");
       next();
     })
     .catch((err) => {

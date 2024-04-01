@@ -6,8 +6,10 @@ const spotController = require("../controllers/spotController");
 
 router.post("/register", userController.register); // Use the register function from the userController
 router.post("/login", userController.login); // Use the login function from the userController
+router.get("/me", userController.getUser);
 router.post("/createUserSpot", spotController.addSpot); // Use the createSpot function from the userController
 router.post("/getFavoriteSpots", spotController.getUserFavoriteSpots);
 router.post("/getRecentSpots", spotController.getUserRecentSpots);
+router.post("/searchSpots", spotController.searchSpots);
 
 module.exports = router;
