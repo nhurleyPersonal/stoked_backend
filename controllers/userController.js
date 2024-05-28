@@ -6,19 +6,25 @@ const User = require("../models/userModel"); // Adjust the path according to you
 const secret = "supersecretkey"; // Replace with your own secret key
 
 const register = async (req, res) => {
-  const { email, password, firstName, lastName, username } = req.body;
+  let { email, password, firstName, lastName } = req.body;
+  email = email.toLowerCase();
 
   if (!email || !password) {
-    return res.status(400).json({ error: "email and password are required" });
+    return res.status(500).json({
+      status: "error",
+      code: 410,
+      message: "Need Both Email and Passwrod",
+    });
   }
 
   try {
     // Check if a user with the same email or username already exists
-    const existingUser = await User.findOne({ $or: [{ email }, { username }] });
+    const existingUser = await User.findOne({ email });
     if (existingUser) {
+      console.log("User already exists");
       return res
-        .status(400)
-        .json({ error: "A user with this email or username already exists" });
+        .status(500)
+        .json({ status: "error", code: 409, message: "User already exists" });
     }
 
     // Hash the password
@@ -28,7 +34,6 @@ const register = async (req, res) => {
     const user = new User({
       email,
       password: hash,
-      username,
       firstName,
       lastName,
     });
@@ -42,26 +47,32 @@ const register = async (req, res) => {
     });
 
     // Respond with a success message and the JWT
-    res.status(201).json({
+    res.status(200).json({
+      status: "ok",
       message: "User registered successfully",
       token,
       userID: savedUser._id,
       email: savedUser.email,
       firstName: savedUser.firstName,
       lastName: savedUser.lastName,
-      username: savedUser.username,
     });
   } catch (err) {
     console.error("Error:", err);
-    res.status(500).json({ error: err });
+    res.status(500).json({ status: "error", message: err });
   }
 };
 
 const login = async (req, res) => {
-  const { email, password } = req.body;
+  let { email, password } = req.body;
+
+  email = email.toLowerCase();
 
   if (!email || !password) {
-    return res.status(400).json({ error: "email and password are required" });
+    return res.status(500).json({
+      status: "error",
+      code: 410,
+      message: "Need both email and password",
+    });
   }
 
   try {
@@ -69,35 +80,43 @@ const login = async (req, res) => {
     const user = await User.findOne({ email });
 
     if (!user) {
-      return res
-        .status(400)
-        .json({ error: "Email and Password do not match any current users" });
+      return res.status(500).json({
+        status: "error",
+        code: 408,
+        message: "Email or password is incorrect",
+      });
     }
 
     // Compare the password
     const match = await bcrypt.compare(password, user.password);
 
     if (!match) {
-      return res
-        .status(400)
-        .json({ error: "Email and Password do not match any current users" });
+      return res.status(500).json({
+        status: "error",
+        code: 408,
+        message: "Email or password is incorrect",
+      });
     }
 
     // Generate a JWT
-    const token = jwt.sign({ id: user._id, email }, secret, {
-      expiresIn: "30d",
-    });
+    const token = jwt.sign({ id: user._id, email }, secret, {});
 
-    // Respond with a success message and the JWT
-    res.status(200).json({
+    // Convert the user document to a plain object and exclude the password
+    const userNoPass = user.toObject();
+    delete userNoPass.password;
+    userNoPass.username = userNoPass.email;
+
+    const response = {
+      status: "ok",
       message: "User logged in successfully",
       token,
-      userID: user._id,
-      email: user.email,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      username: user.username,
-    });
+      user: userNoPass,
+    };
+
+    console.log(response);
+
+    // Respond with a success message and the JWT
+    res.status(200).json(response);
   } catch (err) {
     console.error("Error:", err);
     res.status(500).json({ error: err });

@@ -1,6 +1,8 @@
 const Spot = require("../models/spotModel");
 const User = require("../models/userModel");
 const { faker } = require("@faker-js/faker");
+const jwt = require("jsonwebtoken");
+const secretKey = "supersecretkey"; // Replace with your actual secret key
 
 const addSpot = async (req, res) => {
   const { name, location, userSubmitted } = req.body;
@@ -110,10 +112,51 @@ const generateTestSpots = async () => {
   }
 };
 
+const getRandomSpot = async (req, res) => {
+  try {
+    const count = await Spot.countDocuments();
+    const random = Math.floor(Math.random() * count);
+    const spot = await Spot.findOne().skip(random);
+
+    res.status(200).json(spot);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+const getAllSpots = async (req, res) => {
+  console.log("HEREEEE");
+  try {
+    const token = req.headers.authorization.split(" ")[1]; // Extract the token from the Authorization header
+    const decoded = jwt.verify(token, secretKey); // Verify the token
+
+    const spots = await Spot.find();
+
+    let response = {
+      status: "ok",
+      message: "Spots loaded successfully",
+      spots: spots,
+    };
+    console.log(response);
+
+    // Respond with a success message
+    res.status(200).json(response);
+  } catch (err) {
+    console.error("Error:", err);
+    res.status(500).json({
+      status: "error",
+      message: "Failed to fetch spots",
+      error: err,
+    });
+  }
+};
+
 module.exports = {
   addSpot,
   getUserFavoriteSpots,
   getUserRecentSpots,
   searchSpots,
   generateTestSpots,
+  getRandomSpot,
+  getAllSpots,
 };

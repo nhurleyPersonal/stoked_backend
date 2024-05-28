@@ -33,4 +33,18 @@ const getBoardsByUser = async (req, res) => {
   }
 };
 
-module.exports = { addBoard, getBoardsByUser };
+const getRandomBoard = async (req, res) => {
+  try {
+    const count = await Board.countDocuments();
+    const random = Math.floor(Math.random() * count);
+    const board = await Board.findOne().skip(random);
+
+    console.log(board);
+
+    res.status(200).json(board);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+module.exports = { addBoard, getBoardsByUser, getRandomBoard };

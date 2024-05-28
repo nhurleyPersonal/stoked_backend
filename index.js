@@ -3,17 +3,24 @@ const app = express();
 const port = process.env.PORT || 5001;
 const cors = require("cors");
 const router = require("./routes/router");
-const MongoClient = require("mongodb").MongoClient;
+const { MongoClient, ServerApiVersion } = require("mongodb");
 const mongoose = require("mongoose");
 
 // Connection URL
-const dburl = "mongodb://localhost:27017/stoked_db";
+const dburl =
+  "mongodb+srv://noahjhurley:EO7nCAcksdwlSU2U@teststokeddb.nrdifyx.mongodb.net/?retryWrites=true&w=majority&appName=TestStokedDB";
 
 // Database Name
 const dbName = "stoked_db";
 
-// Create a new MongoClient
-const client = new MongoClient(dburl);
+// Create a MongoClient with a MongoClientOptions object to set the Stable API version
+const client = new MongoClient(dburl, {
+  serverApi: {
+    version: ServerApiVersion.v1,
+    strict: true,
+    deprecationErrors: true,
+  },
+});
 
 // Middleware to attach db to request
 app.use((req, res, next) => {
@@ -21,6 +28,7 @@ app.use((req, res, next) => {
     .connect()
     .then(() => {
       req.db = client.db(dbName);
+      console.log("Connected to MongoDB");
       next();
     })
     .catch((err) => {
