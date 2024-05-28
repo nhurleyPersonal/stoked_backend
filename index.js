@@ -20,6 +20,7 @@ const client = new MongoClient(dburl, {
     strict: true,
     deprecationErrors: true,
   },
+  connectTimeoutMS: 30000,
 });
 
 // Middleware to attach db to request
