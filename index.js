@@ -39,6 +39,11 @@ app.use((req, res, next) => {
     });
 });
 
+app.use((req, res, next) => {
+  console.log(`${new Date().toISOString()} - ${req.method} ${req.originalUrl}`);
+  next();
+});
+
 mongoose.connect(dburl, { useNewUrlParser: true, useUnifiedTopology: true });
 
 app.use(cors());
