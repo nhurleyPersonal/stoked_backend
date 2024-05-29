@@ -83,10 +83,10 @@ const getSessionsByUser = async (req, res) => {
       .populate({ path: "user", select: "-password" }) // Exclude password field
       .populate("surfData");
 
-    console.log(sessions[0]);
     sessions.map((session) => {
       session.user.username = session.user.email;
     });
+    console.log(sessions);
 
     // Respond with the sessions
     res.status(200).json({ status: "ok", message: "ok", sessions: sessions });
