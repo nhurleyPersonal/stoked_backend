@@ -84,7 +84,9 @@ const getSessionsByUser = async (req, res) => {
       .populate("surfData");
 
     console.log(sessions[0]);
-    sessions.user.username = sessions.user.email;
+    sessions.map((session) => {
+      session.user.username = session.user.email;
+    });
 
     // Respond with the sessions
     res.status(200).json({ status: "ok", message: "ok", sessions: sessions });
