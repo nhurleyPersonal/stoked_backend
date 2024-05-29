@@ -85,8 +85,8 @@ const getSessionsByUser = async (req, res) => {
 
     sessions.map((session) => {
       session.user.username = session.user.email;
+      console.log("A", session);
     });
-    console.log(sessions);
 
     // Respond with the sessions
     res.status(200).json({ status: "ok", message: "ok", sessions: sessions });
