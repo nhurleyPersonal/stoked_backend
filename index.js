@@ -5,6 +5,7 @@ const cors = require("cors");
 const router = require("./routes/router");
 const { MongoClient, ServerApiVersion } = require("mongodb");
 const mongoose = require("mongoose");
+const generateTestSpots = require("./controllers/spotController");
 
 // Connection URL
 const dburl =
@@ -30,6 +31,7 @@ app.use((req, res, next) => {
     .then(() => {
       req.db = client.db(dbName);
       console.log("Connected to MongoDB");
+      generateTestSpots();
       next();
     })
     .catch((err) => {
