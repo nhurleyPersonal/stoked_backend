@@ -51,7 +51,7 @@ app.use(express.json());
 app.use("/api", router);
 
 app.get("/", (req, res) => {
-  res.send("Hello World!");
+  res.send("Hi Katie!");
 });
 
 app.listen(port, () => {
