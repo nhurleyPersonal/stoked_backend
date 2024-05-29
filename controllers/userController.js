@@ -125,7 +125,7 @@ const login = async (req, res) => {
       status: "ok",
       message: "User logged in successfully",
       token,
-      user: userNoPass,
+      user: user,
     };
 
     console.log(response);
