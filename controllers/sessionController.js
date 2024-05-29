@@ -75,19 +75,15 @@ const addSessionToDB = async (req, res) => {
 
 const getSessionsByUser = async (req, res) => {
   const { _id } = req.body;
-  console.log(req.body);
-
-  console.log(_id);
-
   try {
     // Find all sessions associated with the user
     const sessions = await Session.find({ user: _id })
       .populate("spot")
       .populate("board")
-      .populate("user")
+      .populate({ path: "user", select: "-password" }) // Exclude password field
       .populate("surfData");
 
-    console.log(sessions);
+    sessions.user.username = sessions.user.email;
 
     // Respond with the sessions
     res.status(200).json({ status: "ok", message: "ok", sessions: sessions });
