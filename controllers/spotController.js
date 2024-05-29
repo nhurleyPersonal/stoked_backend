@@ -156,7 +156,6 @@ module.exports = {
   getUserFavoriteSpots,
   getUserRecentSpots,
   searchSpots,
-  generateTestSpots,
   getRandomSpot,
   getAllSpots,
 };
