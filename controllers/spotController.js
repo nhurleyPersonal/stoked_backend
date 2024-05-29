@@ -6,6 +6,7 @@ const secretKey = "supersecretkey"; // Replace with your actual secret key
 
 const addSpot = async (req, res) => {
   const { name, location, userSubmitted } = req.body;
+  console.log("ADDIING SPOT");
 
   if (!name) {
     return res.status(400).json({ error: "name is required" });
