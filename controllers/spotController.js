@@ -1,6 +1,6 @@
 const Spot = require("../models/spotModel");
 const User = require("../models/userModel");
-const { faker } = require("@faker-js/faker");
+// const { faker } = require("@faker-js/faker");
 const jwt = require("jsonwebtoken");
 const secretKey = "supersecretkey"; // Replace with your actual secret key
 
@@ -96,21 +96,21 @@ const searchSpots = async (req, res) => {
   }
 };
 
-const generateTestSpots = async () => {
-  const spots = Array.from({ length: 10 }, () => ({
-    name: faker.address.streetName(),
-    location: `${faker.address.latitude()}, ${faker.address.longitude()}`,
-    userSubmitted: null,
-    defaultSpot: true,
-  }));
+// const generateTestSpots = async () => {
+//   const spots = Array.from({ length: 10 }, () => ({
+//     name: faker.address.streetName(),
+//     location: `${faker.address.latitude()}, ${faker.address.longitude()}`,
+//     userSubmitted: null,
+//     defaultSpot: true,
+//   }));
 
-  try {
-    await Spot.insertMany(spots);
-    console.log("Test spots generated successfully");
-  } catch (err) {
-    console.error("Error generating test spots:", err);
-  }
-};
+//   try {
+//     await Spot.insertMany(spots);
+//     console.log("Test spots generated successfully");
+//   } catch (err) {
+//     console.error("Error generating test spots:", err);
+//   }
+// };
 
 const getRandomSpot = async (req, res) => {
   try {
