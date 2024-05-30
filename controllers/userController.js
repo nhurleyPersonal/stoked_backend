@@ -9,6 +9,7 @@ const secret = "supersecretkey"; // Replace with your own secret key
 const register = async (req, res) => {
   let { email, username, password, firstName, lastName } = req.body;
   email = email.toLowerCase();
+  console.log(req.body);
 
   if (!email || !password || !username) {
     return res.status(500).json({
