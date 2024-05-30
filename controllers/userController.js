@@ -7,15 +7,17 @@ const AuthTable = require("../models/authTableModel");
 const secret = "supersecretkey"; // Replace with your own secret key
 
 const register = async (req, res) => {
-  let { email, username, password, firstName, lastName } = req.body;
-  email = email.toLowerCase();
   console.log(req.body);
+  let { user, password } = req.body;
+  let { email, username, firstName, lastName, tagline, skillLevel, homeSpot } =
+    user;
+  email = email.toLowerCase();
 
   if (!email || !password || !username) {
     return res.status(500).json({
       status: "error",
       code: 410,
-      message: "Need Both Email, Username, Password",
+      message: "Need Email, Username, Password",
     });
   }
 
@@ -38,6 +40,9 @@ const register = async (req, res) => {
       username,
       firstName,
       lastName,
+      tagline,
+      skillLevel,
+      homeSpot,
     });
 
     // Save the user to the User database
