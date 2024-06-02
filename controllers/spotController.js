@@ -79,20 +79,30 @@ const getUserRecentSpots = async (req, res) => {
 };
 
 const searchSpots = async (req, res) => {
-  const { searchTerm, userID } = req.body;
+  console.log(req.body);
+  const { searchTerm } = req.body;
 
   try {
     const spots = await Spot.find({
-      $and: [
-        { $or: [{ defaultSpot: true }, { userSubmitted: userID }] },
-        { name: { $regex: searchTerm, $options: "i" } },
-      ],
+      name: { $regex: searchTerm, $options: "i" },
     });
 
-    res.status(200).json({ spots });
+    let response = {
+      status: "ok",
+      message: "Spots loaded successfully",
+      spots: spots,
+    };
+
+    console.log(response);
+
+    res.status(200).json(response);
   } catch (err) {
     console.error("Error:", err);
-    res.status(500).json({ error: err });
+    res.status(500).json({
+      status: "error",
+      message: "Failed to fetch spots",
+      error: err,
+    });
   }
 };
 

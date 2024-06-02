@@ -167,8 +167,40 @@ const getUser = async (req, res) => {
   }
 };
 
+const searchUsers = async (req, res) => {
+  try {
+    // Get the search query from the request
+    const query = req.query.search;
+
+    // Create a regex pattern for case-insensitive partial matching
+    const pattern = new RegExp(query, "i");
+
+    // Find users by username, first name, or last name
+    const users = await User.find({
+      $or: [
+        { username: pattern },
+        { firstName: pattern },
+        { lastName: pattern },
+      ],
+    })
+      .sort({ username: 1, lastName: 1, firstName: 1 }) // Sort by username, then last name, then first name
+      .select("-password"); // Exclude the password field
+
+    if (!users) {
+      return res.status(404).json({ message: "No users found" });
+    }
+
+    // Send the user data
+    res.json(users);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
 module.exports = {
   register,
   login,
   getUser,
+  searchUsers,
 };

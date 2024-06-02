@@ -20,5 +20,6 @@ router.get("/getRandomBoard", boardController.getRandomBoard);
 router.get("/getRandomSpot", spotController.getRandomSpot);
 router.post("/getSessionsbyUser", sessionController.getSessionsByUser);
 router.post("/getAllSpots", spotController.getAllSpots);
+router.post("/searchUsers", userController.searchUsers);
 
 module.exports = router;
