@@ -192,9 +192,7 @@ const searchUsers = async (req, res) => {
           { firstName: pattern },
           { lastName: pattern },
         ],
-      })
-        .sort({ username: 1, lastName: 1, firstName: 1 }) // Sort by username, then last name, then first name
-        .select("-password"); // Exclude the password field
+      }).sort({ username: 1, lastName: 1, firstName: 1 });
 
       if (!users) {
         return res.status(404).json({ message: "No users found" });
