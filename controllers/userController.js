@@ -169,32 +169,44 @@ const getUser = async (req, res) => {
 
 const searchUsers = async (req, res) => {
   try {
-    // Get the search query from the request
-    const query = req.query.search;
+    // Get the token from the Authorization header
+    const token = req.headers.authorization.split(" ")[1];
 
-    // Create a regex pattern for case-insensitive partial matching
-    const pattern = new RegExp(query, "i");
+    // Verify the token
+    jwt.verify(token, secret, async (err, decoded) => {
+      if (err) {
+        return res
+          .status(500)
+          .json({ status: "error", message: "Invalid token" });
+      }
 
-    // Find users by username, first name, or last name
-    const users = await User.find({
-      $or: [
-        { username: pattern },
-        { firstName: pattern },
-        { lastName: pattern },
-      ],
-    })
-      .sort({ username: 1, lastName: 1, firstName: 1 }) // Sort by username, then last name, then first name
-      .select("-password"); // Exclude the password field
+      // Get the search query from the request
+      const { searchTerm } = req.body;
 
-    if (!users) {
-      return res.status(404).json({ message: "No users found" });
-    }
+      // Create a regex pattern for case-insensitive partial matching
+      const pattern = new RegExp(searchTerm, "i");
 
-    // Send the user data
-    res.json(users);
+      // Find users by username, first name, or last name
+      const users = await User.find({
+        $text: { $search: searchTerm },
+      })
+        .sort({ username: 1, lastName: 1, firstName: 1 }) // Sort by username, then last name, then first name
+        .select("-password"); // Exclude the password field
+
+      if (!users) {
+        return res.status(404).json({ message: "No users found" });
+      }
+
+      // Send the user data
+      res.status(200).json({
+        status: "ok",
+        message: "Users fetched successfully",
+        users: users,
+      });
+    });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({ status: "error", message: "Server error" });
   }
 };
 
