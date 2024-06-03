@@ -201,7 +201,7 @@ const searchUsers = async (req, res) => {
         status: "ok",
         message: "Users found",
         token,
-        user: users,
+        users: users,
       };
 
       console.log(response);
