@@ -186,9 +186,12 @@ const searchUsers = async (req, res) => {
       // Create a regex pattern for case-insensitive partial matching
       const pattern = new RegExp(searchTerm, "i");
 
-      // Find users by username, first name, or last name
       const users = await User.find({
-        $text: { $search: searchTerm },
+        $or: [
+          { username: pattern },
+          { firstName: pattern },
+          { lastName: pattern },
+        ],
       })
         .sort({ username: 1, lastName: 1, firstName: 1 }) // Sort by username, then last name, then first name
         .select("-password"); // Exclude the password field
