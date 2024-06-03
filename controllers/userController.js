@@ -193,18 +193,18 @@ const searchUsers = async (req, res) => {
         .sort({ username: 1, lastName: 1, firstName: 1 }) // Sort by username, then last name, then first name
         .select("-password"); // Exclude the password field
 
-      console.log("HERE", users);
-
       if (!users) {
         return res.status(404).json({ message: "No users found" });
       }
 
       const response = {
         status: "ok",
-        message: "User logged in successfully",
+        message: "Users found",
         token,
         user: users,
       };
+
+      console.log(response);
 
       // Send the user data
       res.status(200).json(response);
