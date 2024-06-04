@@ -80,8 +80,7 @@ const getSessionsByUser = async (req, res) => {
     const sessions = await Session.find({ user: _id })
       .populate("spot")
       .populate("board")
-      .populate({ path: "user", select: "-password" }) // Exclude password field
-      .populate("surfData");
+      .populate({ path: "user", select: "-password" }); // Exclude password field
 
     const sessionsWithUsername = sessions.map((session) => {
       const sessionObject = session.toObject();
