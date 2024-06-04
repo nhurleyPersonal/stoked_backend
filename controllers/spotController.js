@@ -5,37 +5,25 @@ const jwt = require("jsonwebtoken");
 const secretKey = "supersecretkey"; // Replace with your actual secret key
 
 const addSpot = async (req, res) => {
-  const { name, location, userSubmitted } = req.body;
+  const { name, lat, lon, buoyId, depth, slope } = req.body;
 
-  if (!name) {
-    return res.status(400).json({ error: "name is required" });
+  if ((!name, !lat, !lon, !buoyId, !depth, !slope)) {
+    return res
+      .status(400)
+      .json({ error: "name lat lon buoyId dept slope are required" });
   }
 
   try {
-    // Check if a spot with the same name (case-insensitive) and userSubmitted already exists
-    const existingSpot = await Spot.findOne({
-      name: { $regex: new RegExp(`^${name}$`, "i") },
-      userSubmitted: userSubmitted,
-    });
-    if (existingSpot) {
-      return res.status(400).json({
-        error: "User has already saved this spot",
-      });
-    }
-
     const newSpot = new Spot({
       name,
-      location,
-      userSubmitted,
-      defaultSpot: false,
+      lat,
+      lon,
+      buoyId,
+      depth,
+      slope,
     });
 
     const savedSpot = await newSpot.save();
-
-    // Add the new spot to the favoriteSpots field of the User document
-    const user = await User.findById(userSubmitted);
-    user.recentSpots.push(savedSpot._id);
-    await user.save();
 
     res
       .status(200)
