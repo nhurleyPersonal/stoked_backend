@@ -11,6 +11,7 @@ const spotSchema = new Schema({
   lon: { type: String, required: false },
   depth: { type: String, required: false },
   slope: { type: String, required: false },
+  model: { type: String, required: false },
 });
 
 const Spot = mongoose.model("Spot", spotSchema);
