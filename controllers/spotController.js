@@ -5,9 +5,9 @@ const jwt = require("jsonwebtoken");
 const secretKey = "supersecretkey"; // Replace with your actual secret key
 
 const addSpot = async (req, res) => {
-  const { name, lat, lon, buoyId, depth, slope } = req.body;
+  const { name, lat, lon, buoyId, buoy_x, buoy_y, depth, slope } = req.body;
 
-  if ((!name, !lat, !lon, !buoyId, !depth, !slope)) {
+  if ((!name, !lat, !lon, !buoyId, !depth, !slope, !buoy_x, !buoy_y)) {
     return res
       .status(400)
       .json({ error: "name lat lon buoyId dept slope are required" });
@@ -19,6 +19,8 @@ const addSpot = async (req, res) => {
       lat,
       lon,
       buoyId,
+      buoy_x,
+      buoy_y,
       depth,
       slope,
     });
