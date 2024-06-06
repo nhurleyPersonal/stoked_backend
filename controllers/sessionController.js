@@ -1,6 +1,8 @@
 const jwt = require("jsonwebtoken");
 const Session = require("../models/sessionModel");
 const secret = "supersecretkey"; // Replace with your own secret key
+const { searchForecastsRangeInternal } = require("./surfDataController"); // import the function
+const SurfData = require("../models/surfDataModel");
 
 const addSessionToDB = async (req, res) => {
   console.log(req.body);
@@ -9,7 +11,6 @@ const addSessionToDB = async (req, res) => {
     sessionDatetime,
     sessionLength,
     board,
-    surfData,
     wordOne,
     wordTwo,
     wordThree,
@@ -36,6 +37,17 @@ const addSessionToDB = async (req, res) => {
         .status(500)
         .json({ status: "error", code: 403, message: "Unauthorized" });
     }
+
+    // Call searchForecastsRangeInternal to get the surfData ids
+    const startDate = sessionDatetime; // assuming sessionDatetime is the start date
+    const endDate = new Date(
+      sessionDatetime.getTime() + sessionLength * 60 * 60 * 1000
+    ); // assuming sessionLength is in hours
+    const surfData = await searchForecastsRangeInternal(
+      spot,
+      startDate,
+      endDate
+    );
 
     // Create a new session
     const session = new Session({
@@ -80,6 +92,7 @@ const getSessionsByUser = async (req, res) => {
     const sessions = await Session.find({ user: _id })
       .populate("spot")
       .populate("board")
+      .populate("surfData")
       .populate({ path: "user", select: "-password" }); // Exclude password field
 
     const sessionsWithUsername = sessions.map((session) => {
