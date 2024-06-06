@@ -1,4 +1,4 @@
-const SurfData = require("../models/sessionModel");
+const SurfData = require("../models/surfDataModel");
 
 const searchForecasts = async (req, res) => {
   const { _id, date } = req.body;
