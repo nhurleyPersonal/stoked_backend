@@ -66,6 +66,8 @@ const addSessionToDB = async (req, res) => {
       user,
     });
 
+    console.log(session);
+
     // Save the session to the database
     const savedSession = await session.save();
 
