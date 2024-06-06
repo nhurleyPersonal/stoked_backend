@@ -38,11 +38,10 @@ const addSessionToDB = async (req, res) => {
         .json({ status: "error", code: 403, message: "Unauthorized" });
     }
 
-    // Call searchForecastsRangeInternal to get the surfData ids
-    const startDate = sessionDatetime; // assuming sessionDatetime is the start date
+    const startDate = new Date(sessionDatetime);
     const endDate = new Date(
-      sessionDatetime.getTime() + sessionLength * 60 * 60 * 1000
-    ); // assuming sessionLength is in hours
+      startDate.getTime() + sessionLength * 60 * 60 * 1000
+    );
     const surfData = await searchForecastsRangeInternal(
       spot,
       startDate,
