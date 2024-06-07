@@ -48,6 +48,8 @@ const addSessionToDB = async (req, res) => {
       endDate
     );
 
+    console.log(surfData);
+
     // Create a new session
     const session = new Session({
       spot,
@@ -65,8 +67,6 @@ const addSessionToDB = async (req, res) => {
       extraNotes,
       user,
     });
-
-    console.log(session);
 
     // Save the session to the database
     const savedSession = await session.save();
