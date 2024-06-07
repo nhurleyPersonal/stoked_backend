@@ -66,7 +66,7 @@ const searchForecastsRangeInternal = async (spotId, startDate, endDate) => {
   );
   try {
     const forecasts = await SurfData.find({
-      spotId: mongoose.Types.ObjectId(spotId),
+      spotId: new ObjectId(spotId),
     });
     console.log("ABCDE", forecasts);
     return forecasts;
