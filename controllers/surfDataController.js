@@ -56,18 +56,26 @@ const searchForecastsRange = async (req, res) => {
 const searchForecastsRangeInternal = async (spotId, startDate, endDate) => {
   const targetStartDate = Math.floor(startDate / 10800) * 10800; // round down to the nearest multiple of 10800
   const targetEndDate = Math.floor(endDate / 10800) * 10800; // round down to the nearest multiple of 10800
-
+  console.log(
+    "ABCDEF",
+    spotId,
+    startDate,
+    endDate,
+    targetStartDate,
+    targetEndDate
+  );
   try {
-    SurfData.find({
-      spotId: spotId,
-    }).then((forecasts) => {
-      console.log("ABCDE", forecasts);
-      return forecasts;
+    const forecasts = await SurfData.find({
+      spotId: new ObjectId(spotId),
     });
+    console.log("ABCDE", forecasts);
+    return forecasts;
   } catch (error) {
+    console.log("error!", error);
     return null;
   }
 };
+
 const searchForecastsInternal = async (spotId, date) => {
   const targetDate = Math.floor(date / 10800) * 10800; // round down to the nearest multiple of 10800
 
