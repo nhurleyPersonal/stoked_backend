@@ -55,8 +55,8 @@ const searchForecastsRange = async (req, res) => {
 };
 
 const searchForecastsRangeInternal = async (spotId, startDate, endDate) => {
-  const targetStartDate = Math.floor(startDate / 10800) * 10800; // round down to the nearest multiple of 10800
-  const targetEndDate = Math.floor(endDate / 10800) * 10800; // round down to the nearest multiple of 10800
+  const targetStartDate = (Math.floor(startDate / 10800) * 10800) / 1000; // round down to the nearest multiple of 10800
+  const targetEndDate = (Math.floor(endDate / 10800) * 10800) / 1000; // round down to the nearest multiple of 10800
   console.log(
     "ABCDEF",
     spotId,
