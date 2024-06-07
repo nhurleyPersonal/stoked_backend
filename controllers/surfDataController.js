@@ -57,7 +57,8 @@ const searchForecastsRangeInternal = async (spotId, startDate, endDate) => {
   const targetEndDate = Math.floor(endDate / 10800) * 10800; // round down to the nearest multiple of 10800
 
   try {
-    console.log(targetStartDate, targetEndDate);
+    const allForecasts = await SurfData.find({});
+    console.log("ABCDE", allForecasts);
     const forecasts = await SurfData.find({
       spot: spotId,
       date: { $gte: targetStartDate, $lte: targetEndDate },
