@@ -1,5 +1,6 @@
 const SurfData = require("../models/surfDataModel");
 const mongoose = require("mongoose");
+const ObjectId = mongoose.Types.ObjectId;
 
 const searchForecasts = async (req, res) => {
   const { _id, date } = req.body;
