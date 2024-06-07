@@ -4,7 +4,7 @@ const Spot = require("./spotModel");
 
 const surfDataSchema = new Schema({
   spot: { type: Schema.Types.ObjectId, ref: Spot, required: true },
-  date: { type: Date, required: true },
+  date: { type: Number, required: true },
   swellHeight: { type: Number, required: true },
   swellPeriod: { type: Number, required: true },
   swellDirection: { type: Number, required: true },
