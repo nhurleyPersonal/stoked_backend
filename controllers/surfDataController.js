@@ -1,4 +1,5 @@
 const SurfData = require("../models/surfDataModel");
+const mongoose = require("mongoose");
 
 const searchForecasts = async (req, res) => {
   const { _id, date } = req.body;
@@ -65,7 +66,7 @@ const searchForecastsRangeInternal = async (spotId, startDate, endDate) => {
   );
   try {
     const forecasts = await SurfData.find({
-      spotId: spotId,
+      spotId: mongoose.Types.ObjectId(spotId),
     });
     console.log("ABCDE", forecasts);
     return forecasts;
