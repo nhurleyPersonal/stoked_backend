@@ -68,6 +68,10 @@ const searchForecastsRangeInternal = async (spotId, startDate, endDate) => {
   try {
     const forecasts = await SurfData.find({
       spotId: new ObjectId(spotId),
+      date: {
+        $gte: targetStartDate,
+        $lte: targetEndDate,
+      },
     });
     console.log("ABCDE", forecasts);
     return forecasts;
