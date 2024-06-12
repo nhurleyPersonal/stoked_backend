@@ -64,6 +64,9 @@ const addSessionToDB = async (req, res) => {
       waveCount,
       goodWaveCount,
       crowd,
+      lineup,
+      waveHeight,
+      timeBetweenWaves,
       extraNotes,
       user,
     });
