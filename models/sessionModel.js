@@ -18,6 +18,9 @@ const sessionSchema = new Schema({
   waveCount: { type: Number, required: false },
   goodWaveCount: { type: Number, required: false },
   crowd: { type: String, required: false },
+  lineup: { type: String, required: false },
+  waveHeight: { type: String, required: false },
+  timeBetweenWaves: { type: String, required: false },
   extraNotes: { type: String, required: false },
   user: { type: Schema.Types.ObjectId, ref: User, required: true },
 });
