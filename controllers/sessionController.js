@@ -48,7 +48,8 @@ const addSessionToDB = async (req, res) => {
       endDate
     );
 
-    console.log(surfData);
+    const tideData =
+      (await searchTidesRangeInternal(spot, startDate, endDate)) || [];
 
     // Create a new session
     const session = new Session({
@@ -57,6 +58,7 @@ const addSessionToDB = async (req, res) => {
       sessionLength,
       board,
       surfData,
+      tideData,
       wordOne,
       wordTwo,
       wordThree,
@@ -97,6 +99,7 @@ const getSessionsByUser = async (req, res) => {
       .populate("spot")
       .populate("board")
       .populate("surfData")
+      .populate("tideData")
       .populate({ path: "user", select: "-password" }); // Exclude password field
 
     const sessionsWithUsername = sessions.map((session) => {

@@ -1,4 +1,5 @@
 const SurfData = require("../models/surfDataModel");
+const TideData = require("../models/tideDataModel");
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
 
@@ -54,6 +55,31 @@ const searchForecastsRange = async (req, res) => {
   }
 };
 
+const searchTidesRangeInternal = async (tideStationId, startDate, endDate) => {
+  try {
+    // If they are not, return all documents between startDate and endDate
+    const tides = await TideData.find({
+      stationId: tideStationId,
+      date: {
+        $gte: startDate.toISOString().slice(0, 10),
+        $lte: endDate.toISOString().slice(0, 10),
+      },
+    });
+
+    tides = tides.map((tide) => {
+      tide.tideData = tide.tideData.filter((item) => {
+        const itemDate = new Date(item.time);
+        return itemDate >= startDate && itemDate <= endDate;
+      });
+      return tide;
+    });
+
+    return tides;
+  } catch (error) {
+    return null;
+  }
+};
+
 const searchForecastsRangeInternal = async (spotId, startDate, endDate) => {
   const targetStartDate = Math.floor(startDate / 1000 / 10800) * 10800; // round down to the nearest multiple of 10800
   const targetEndDate = Math.floor(endDate / 1000 / 10800) * 10800; // round down to the nearest multiple of 10800
@@ -101,4 +127,5 @@ module.exports = {
   searchForecastsInternal,
   searchForecastsRange,
   searchForecastsRangeInternal,
+  searchTidesRangeInternal,
 };
