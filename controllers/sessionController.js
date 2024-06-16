@@ -1,7 +1,10 @@
 const jwt = require("jsonwebtoken");
 const Session = require("../models/sessionModel");
 const secret = "supersecretkey"; // Replace with your own secret key
-const { searchForecastsRangeInternal } = require("./surfDataController"); // import the function
+const {
+  searchForecastsRangeInternal,
+  searchTidesRangeInternal,
+} = require("./surfDataController"); // import the function
 const SurfData = require("../models/surfDataModel");
 
 const addSessionToDB = async (req, res) => {
