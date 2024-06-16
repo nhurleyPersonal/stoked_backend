@@ -57,21 +57,12 @@ const searchForecastsRange = async (req, res) => {
 
 const searchTidesRangeInternal = async (tideStationId, startDate, endDate) => {
   try {
-    // If they are not, return all documents between startDate and endDate
     const tides = await TideData.find({
       stationId: tideStationId,
       date: {
         $gte: startDate.toISOString().slice(0, 10),
         $lte: endDate.toISOString().slice(0, 10),
       },
-    });
-
-    tides = tides.map((tide) => {
-      tide.tideData = tide.tideData.filter((item) => {
-        const itemDate = new Date(item.time);
-        return itemDate >= startDate && itemDate <= endDate;
-      });
-      return tide;
     });
 
     return tides;

@@ -4,6 +4,7 @@ const Spot = require("./spotModel");
 const Board = require("./boardModel");
 const SurfData = require("./surfDataModel");
 const User = require("./userModel");
+const TideData = require("./tideDataModel"); // Add this line
 
 const sessionSchema = new Schema({
   spot: { type: Schema.Types.ObjectId, ref: Spot },
@@ -11,6 +12,7 @@ const sessionSchema = new Schema({
   sessionLength: { type: Number, required: true },
   board: { type: Schema.Types.ObjectId, ref: Board, required: false },
   surfData: [{ type: Schema.Types.ObjectId, ref: SurfData, required: false }],
+  tideData: { type: Schema.Types.ObjectId, ref: TideData, required: false }, // Add this line
   wordOne: { type: String, required: true },
   wordTwo: { type: String, required: true },
   wordThree: { type: String, required: true },
