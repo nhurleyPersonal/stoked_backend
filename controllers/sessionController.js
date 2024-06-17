@@ -69,7 +69,8 @@ const addSessionToDB = async (req, res) => {
     const tideDataDocument =
       (await searchTidesByDayInternal(tideStation, startDate)) || [];
 
-    const tideDataID = tideDataDocument.toObject()._id;
+    console.log("Tide Data Document:", tideDataDocument);
+    const tideDataID = tideDataDocument._id;
     console.log("Tide Data ID:", tideDataID);
 
     // Create a new session
