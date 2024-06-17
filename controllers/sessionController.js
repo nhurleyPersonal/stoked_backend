@@ -65,7 +65,7 @@ const addSessionToDB = async (req, res) => {
 
     console.log("spotDocument:", spotDocument);
     // Get the tideStation value from the spot document
-    const tideStation = spotDocument.tideStation;
+    const tideStation = spotDocument["tide_station"];
 
     // Pass the tideStation value to the searchTidesByDayInternal function
     const tideData =
