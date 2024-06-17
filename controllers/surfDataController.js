@@ -134,4 +134,5 @@ module.exports = {
   searchForecastsRange,
   searchForecastsRangeInternal,
   searchTidesRangeInternal,
+  searchTidesByDayInternal,
 };
