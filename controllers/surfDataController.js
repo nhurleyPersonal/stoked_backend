@@ -72,6 +72,11 @@ const searchTidesRangeInternal = async (tideStationId, startDate, endDate) => {
 };
 
 const searchTidesByDayInternal = async (tideStationId, date) => {
+  console.log(
+    "searchTidesByDayInternal",
+    tideStationId,
+    date.toISOString().slice(0, 10)
+  );
   try {
     const tides = await TideData.find({
       stationId: String(tideStationId),

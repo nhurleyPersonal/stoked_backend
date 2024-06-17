@@ -55,7 +55,8 @@ const addSessionToDB = async (req, res) => {
       endDate
     );
 
-    const tideData = (await searchTidesByDayInternal(spot, startDate)) || [];
+    const tideData =
+      (await searchTidesByDayInternal(spot.tideStation, startDate)) || [];
 
     console.log("tidedata:", tideData);
 
