@@ -63,14 +63,7 @@ const addSessionToDB = async (req, res) => {
         .json({ status: "error", code: 404, message: "Spot not found" });
     }
 
-    const tideStation = spotDocument["tide_station"];
-    console.log(
-      "tideStation:",
-      spotDocument,
-      tideStation,
-      spotDocument["tide_station"],
-      spotDocument.tide_station
-    );
+    const tideStation = spotDocument.toObject()["tide_station"];
 
     // Pass the tideStation value to the searchTidesByDayInternal function
     const tideData =
