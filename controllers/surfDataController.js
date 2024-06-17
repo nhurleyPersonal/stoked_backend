@@ -94,14 +94,7 @@ const searchTidesByDayInternal = async (tideStationId, date) => {
 const searchForecastsRangeInternal = async (spotId, startDate, endDate) => {
   const targetStartDate = Math.floor(startDate / 1000 / 10800) * 10800; // round down to the nearest multiple of 10800
   const targetEndDate = Math.floor(endDate / 1000 / 10800) * 10800; // round down to the nearest multiple of 10800
-  console.log(
-    "ABCDEF",
-    spotId,
-    startDate,
-    endDate,
-    targetStartDate,
-    targetEndDate
-  );
+  console.log(spotId, startDate, endDate, targetStartDate, targetEndDate);
   try {
     const forecasts = await SurfData.find({
       spotId: new ObjectId(spotId),
