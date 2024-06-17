@@ -7,6 +7,7 @@ const {
   searchTidesByDayInternal,
 } = require("./surfDataController"); // import the function
 const SurfData = require("../models/surfDataModel");
+const Spot = require("../models/spotModel");
 
 const addSessionToDB = async (req, res) => {
   console.log(req.body);
