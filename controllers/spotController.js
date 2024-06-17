@@ -71,7 +71,6 @@ const getUserRecentSpots = async (req, res) => {
 };
 
 const searchSpots = async (req, res) => {
-  console.log(req.body);
   const { searchTerm } = req.body;
 
   try {
@@ -84,8 +83,6 @@ const searchSpots = async (req, res) => {
       message: "Spots loaded successfully",
       spots: spots,
     };
-
-    console.log(response);
 
     res.status(200).json(response);
   } catch (err) {
@@ -108,7 +105,6 @@ const searchSpots = async (req, res) => {
 
 //   try {
 //     await Spot.insertMany(spots);
-//     console.log("Test spots generated successfully");
 //   } catch (err) {
 //     console.error("Error generating test spots:", err);
 //   }
@@ -127,7 +123,6 @@ const getRandomSpot = async (req, res) => {
 };
 
 const getAllSpots = async (req, res) => {
-  console.log("HEREEEE");
   try {
     const token = req.headers.authorization.split(" ")[1]; // Extract the token from the Authorization header
     const decoded = jwt.verify(token, secretKey); // Verify the token
@@ -139,7 +134,6 @@ const getAllSpots = async (req, res) => {
       message: "Spots loaded successfully",
       spots: spots,
     };
-    console.log(response);
 
     // Respond with a success message
     res.status(200).json(response);

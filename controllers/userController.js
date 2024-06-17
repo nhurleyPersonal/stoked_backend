@@ -7,7 +7,6 @@ const AuthTable = require("../models/authTableModel");
 const secret = "supersecretkey"; // Replace with your own secret key
 
 const register = async (req, res) => {
-  console.log(req.body);
   let { user, password } = req.body;
   let { email, username, firstName, lastName, tagline, skillLevel, homeSpot } =
     user;
@@ -134,8 +133,6 @@ const login = async (req, res) => {
       user: user,
     };
 
-    console.log(response);
-
     // Respond with a success message and the JWT
     res.status(200).json(response);
   } catch (err) {
@@ -204,8 +201,6 @@ const searchUsers = async (req, res) => {
         token,
         users: users,
       };
-
-      console.log(response);
 
       // Send the user data
       res.status(200).json(response);

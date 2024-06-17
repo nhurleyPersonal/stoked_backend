@@ -10,7 +10,6 @@ const SurfData = require("../models/surfDataModel");
 const Spot = require("../models/spotModel");
 
 const addSessionToDB = async (req, res) => {
-  console.log(req.body);
   let {
     spot,
     sessionDatetime,
@@ -34,9 +33,6 @@ const addSessionToDB = async (req, res) => {
     // Verify the JWT
     const token = req.headers.authorization.split(" ")[1]; // Assumes 'Bearer <token>' format
     const decodedToken = jwt.verify(token, secret);
-
-    console.log("decodedToken:", decodedToken);
-    console.log(user);
 
     // Check if the user in the JWT is the same as the user in the session
     if (decodedToken.id !== user._id) {
@@ -67,6 +63,7 @@ const addSessionToDB = async (req, res) => {
         .json({ status: "error", code: 404, message: "Spot not found" });
     }
 
+    console.log("spotDocument:", spotDocument);
     // Get the tideStation value from the spot document
     const tideStation = spotDocument.tideStation;
 

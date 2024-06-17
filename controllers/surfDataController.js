@@ -83,8 +83,6 @@ const searchTidesByDayInternal = async (tideStationId, date) => {
       date: date.toISOString().slice(0, 10),
     });
 
-    console.log("Tides:", tides);
-
     return tides;
   } catch (error) {
     return null;
@@ -103,7 +101,6 @@ const searchForecastsRangeInternal = async (spotId, startDate, endDate) => {
         $lte: targetEndDate,
       },
     });
-    console.log("ABCDE", forecasts);
     return forecasts;
   } catch (error) {
     console.log("error!", error);
