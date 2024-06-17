@@ -4,6 +4,7 @@ const secret = "supersecretkey"; // Replace with your own secret key
 const {
   searchForecastsRangeInternal,
   searchTidesRangeInternal,
+  searchTidesByDayInternal,
 } = require("./surfDataController"); // import the function
 const SurfData = require("../models/surfDataModel");
 
@@ -54,8 +55,7 @@ const addSessionToDB = async (req, res) => {
       endDate
     );
 
-    const tideData =
-      (await searchTidesRangeInternal(spot, startDate, endDate)) || [];
+    const tideData = (await searchTidesByDayInternal(spot, startDate)) || [];
 
     console.log("tidedata:", tideData);
 

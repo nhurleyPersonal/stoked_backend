@@ -57,14 +57,25 @@ const searchForecastsRange = async (req, res) => {
 
 const searchTidesRangeInternal = async (tideStationId, startDate, endDate) => {
   try {
-    console.log("Start Date:", startDate.toISOString().slice(0, 10));
-    console.log("End Date:", endDate.toISOString().slice(0, 10));
     const tides = await TideData.find({
       stationId: tideStationId,
       date: {
         $gte: startDate.toISOString().slice(0, 10),
         $lte: endDate.toISOString().slice(0, 10),
       },
+    });
+
+    return tides;
+  } catch (error) {
+    return null;
+  }
+};
+
+const searchTidesByDayInternal = async (tideStationId, date) => {
+  try {
+    const tides = await TideData.find({
+      stationId: tideStationId,
+      date: date.toISOString().slice(0, 10),
     });
 
     console.log("Tides:", tides);
