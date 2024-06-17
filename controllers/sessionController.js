@@ -66,10 +66,10 @@ const addSessionToDB = async (req, res) => {
     const tideStation = spotDocument.toObject()["tide_station"];
 
     // Pass the tideStation value to the searchTidesByDayInternal function
-    const tideData =
+    const tideDataDocument =
       (await searchTidesByDayInternal(tideStation, startDate)) || [];
 
-    console.log("tidedata:", tideData);
+    const tideDataID = tideDataDocument._id;
 
     // Create a new session
     const session = new Session({
@@ -78,7 +78,7 @@ const addSessionToDB = async (req, res) => {
       sessionLength,
       board,
       surfData,
-      tideData,
+      tideData: tideDataID,
       wordOne,
       wordTwo,
       wordThree,
