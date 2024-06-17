@@ -57,6 +57,8 @@ const addSessionToDB = async (req, res) => {
     const tideData =
       (await searchTidesRangeInternal(spot, startDate, endDate)) || [];
 
+    console.log("tidedata:", tideData);
+
     // Create a new session
     const session = new Session({
       spot,
@@ -87,7 +89,6 @@ const addSessionToDB = async (req, res) => {
       message: "Session added successfully",
       session: savedSession,
     };
-    console.log(response);
 
     // Respond with a success message
     res.status(200).json(response);
