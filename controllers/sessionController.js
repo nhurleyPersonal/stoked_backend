@@ -55,8 +55,23 @@ const addSessionToDB = async (req, res) => {
       endDate
     );
 
+    // Fetch the spot document using the spot ObjectId
+    const spotDocument = await Spot.findById(spot);
+
+    // Check if the spot document exists
+    if (!spotDocument) {
+      console.log("Spot not found");
+      return res
+        .status(500)
+        .json({ status: "error", code: 404, message: "Spot not found" });
+    }
+
+    // Get the tideStation value from the spot document
+    const tideStation = spotDocument.tideStation;
+
+    // Pass the tideStation value to the searchTidesByDayInternal function
     const tideData =
-      (await searchTidesByDayInternal(spot.tideStation, startDate)) || [];
+      (await searchTidesByDayInternal(tideStation, startDate)) || [];
 
     console.log("tidedata:", tideData);
 
