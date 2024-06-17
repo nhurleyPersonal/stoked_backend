@@ -67,6 +67,8 @@ const searchTidesRangeInternal = async (tideStationId, startDate, endDate) => {
       },
     });
 
+    console.log("Tides:", tides);
+
     return tides;
   } catch (error) {
     return null;
