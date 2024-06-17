@@ -63,11 +63,10 @@ const addSessionToDB = async (req, res) => {
         .json({ status: "error", code: 404, message: "Spot not found" });
     }
 
-    console.log("spotDocument:", spotDocument);
-    // Get the tideStation value from the spot document
     const tideStation = spotDocument["tide_station"];
     console.log(
       "tideStation:",
+      spotDocument,
       tideStation,
       spotDocument["tide_station"],
       spotDocument.tide_station
