@@ -138,10 +138,11 @@ const getSessionsByUser = async (req, res) => {
 };
 
 const getSessionsBySpot = async (req, res) => {
-  const { spotId } = req.body;
+  console.log("getSessionsBySpot", req.body);
+  const { id } = req.body;
   try {
     // Find all sessions associated with the spot
-    const sessions = await Session.find({ spot: spotId })
+    const sessions = await Session.find({ spot: id })
       .populate("spot")
       .populate("board")
       .populate("surfData")
@@ -161,13 +162,11 @@ const getSessionsBySpot = async (req, res) => {
     });
 
     // Respond with the sessions
-    res
-      .status(200)
-      .json({
-        status: "ok",
-        message: "Sessions retrieved successfully",
-        sessions: sessionsWithSpotDetails,
-      });
+    res.status(200).json({
+      status: "ok",
+      message: "Sessions retrieved successfully",
+      sessions: sessionsWithSpotDetails,
+    });
   } catch (err) {
     console.error("Error:", err);
     res.status(500).json({ status: "error", message: err.message });
