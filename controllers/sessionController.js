@@ -139,10 +139,10 @@ const getSessionsByUser = async (req, res) => {
 
 const getSessionsBySpot = async (req, res) => {
   console.log("getSessionsBySpot", req.body);
-  const { id } = req.body;
+  const { _id } = req.body;
   try {
     // Find all sessions associated with the spot
-    const sessions = await Session.find({ spot: id })
+    const sessions = await Session.find({ spot: _id })
       .populate("spot")
       .populate("board")
       .populate("surfData")
@@ -160,6 +160,8 @@ const getSessionsBySpot = async (req, res) => {
       sessionObject.spot.name = sessionObject.spot.name; // Assuming spot has a 'name' property
       return sessionObject;
     });
+
+    console.log("sessionsWithSpotDetails", sessionsWithSpotDetails);
 
     // Respond with the sessions
     res.status(200).json({
