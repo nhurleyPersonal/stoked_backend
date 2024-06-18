@@ -28,5 +28,6 @@ router.get("/getRandomBoard", boardController.getRandomBoard); // Get a random b
 // Session routes
 router.post("/addSession", sessionController.addSessionToDB); // Add a new session
 router.post("/getSessionsbyUser", sessionController.getSessionsByUser); // Get a user's sessions
+router.post("/getSessionsBySpot", sessionController.getSessionsBySpot); // Get a spot's sessions
 
 module.exports = router;
