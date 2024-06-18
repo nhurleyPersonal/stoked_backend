@@ -137,4 +137,41 @@ const getSessionsByUser = async (req, res) => {
   }
 };
 
-module.exports = { addSessionToDB, getSessionsByUser };
+const getSessionsBySpot = async (req, res) => {
+  const { spotId } = req.body;
+  try {
+    // Find all sessions associated with the spot
+    const sessions = await Session.find({ spot: spotId })
+      .populate("spot")
+      .populate("board")
+      .populate("surfData")
+      .populate("tideData")
+      .populate({ path: "user", select: "-password" }); // Exclude password field
+
+    if (!sessions) {
+      return res
+        .status(404)
+        .json({ status: "error", message: "No sessions found for this spot" });
+    }
+
+    const sessionsWithSpotDetails = sessions.map((session) => {
+      const sessionObject = session.toObject();
+      sessionObject.spot.name = sessionObject.spot.name; // Assuming spot has a 'name' property
+      return sessionObject;
+    });
+
+    // Respond with the sessions
+    res
+      .status(200)
+      .json({
+        status: "ok",
+        message: "Sessions retrieved successfully",
+        sessions: sessionsWithSpotDetails,
+      });
+  } catch (err) {
+    console.error("Error:", err);
+    res.status(500).json({ status: "error", message: err.message });
+  }
+};
+
+module.exports = { addSessionToDB, getSessionsByUser, getSessionsBySpot };
