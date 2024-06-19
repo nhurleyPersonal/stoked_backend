@@ -161,8 +161,6 @@ const getSessionsBySpot = async (req, res) => {
       return sessionObject;
     });
 
-    console.log("sessionsWithSpotDetails", sessionsWithSpotDetails);
-
     // Respond with the sessions
     res.status(200).json({
       status: "ok",

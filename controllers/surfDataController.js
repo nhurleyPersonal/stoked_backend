@@ -46,7 +46,13 @@ const searchForecastsRange = async (req, res) => {
       });
     }
 
-    return res.status(200).json(forecasts);
+    console.log("forecasts", forecasts);
+
+    return res.status(200).json({
+      status: "ok",
+      message: "Forecasts retrieved successfully",
+      surfData: forecasts,
+    });
   } catch (error) {
     return res.status(500).json({
       message: "An error occurred while searching for forecasts.",
@@ -90,7 +96,7 @@ const searchTidesByDayInternal = async (tideStationId, date) => {
 };
 
 const searchTidesByDay = async (req, res) => {
-  const { tide_station, date } = req.body;
+  const { tideStation, date } = req.body;
   if (!tideStationId || !date) {
     return res.status(400).json({
       message: "Missing required parameters: tideStationId or date.",
@@ -99,13 +105,15 @@ const searchTidesByDay = async (req, res) => {
 
   try {
     const parsedDate = new Date(date);
-    const tides = await searchTidesByDayInternal(tide_station, parsedDate);
+    const tides = await searchTidesByDayInternal(tideStation, parsedDate);
 
     if (!tides) {
       return res.status(404).json({
         message: "No tide data found for the given date and tide station ID.",
       });
     }
+
+    console.log("tides", tides);
 
     res.status(200).json({
       status: "ok",
