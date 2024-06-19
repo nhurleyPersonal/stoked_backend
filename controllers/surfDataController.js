@@ -100,7 +100,7 @@ const searchTidesByDay = async (req, res) => {
   console.log("Search Tides Day", req.body);
 
   const { tideStation, date } = req.body;
-  if (!tideStationId || !date) {
+  if (!tideStation || !date) {
     return res.status(400).json({
       message: "Missing required parameters: tideStationId or date.",
     });
