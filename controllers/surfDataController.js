@@ -89,6 +89,37 @@ const searchTidesByDayInternal = async (tideStationId, date) => {
   }
 };
 
+const searchTidesByDay = async (req, res) => {
+  const { tide_station, date } = req.body;
+  if (!tideStationId || !date) {
+    return res.status(400).json({
+      message: "Missing required parameters: tideStationId or date.",
+    });
+  }
+
+  try {
+    const parsedDate = new Date(date);
+    const tides = await searchTidesByDayInternal(tide_station, parsedDate);
+
+    if (!tides) {
+      return res.status(404).json({
+        message: "No tide data found for the given date and tide station ID.",
+      });
+    }
+
+    res.status(200).json({
+      status: "ok",
+      message: "Sessions retrieved successfully",
+      tideData: tides,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: "An error occurred while retrieving tide data.",
+      error: error.message,
+    });
+  }
+};
+
 const searchForecastsRangeInternal = async (spotId, startDate, endDate) => {
   const targetStartDate = Math.floor(startDate / 1000 / 10800) * 10800; // round down to the nearest multiple of 10800
   const targetEndDate = Math.floor(endDate / 1000 / 10800) * 10800; // round down to the nearest multiple of 10800
@@ -130,4 +161,5 @@ module.exports = {
   searchForecastsRangeInternal,
   searchTidesRangeInternal,
   searchTidesByDayInternal,
+  searchTidesByDay,
 };

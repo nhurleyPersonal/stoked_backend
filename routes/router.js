@@ -5,6 +5,7 @@ const userController = require("../controllers/userController"); // Import the u
 const spotController = require("../controllers/spotController");
 const boardController = require("../controllers/boardController");
 const sessionController = require("../controllers/sessionController");
+const surfDataController = require("../controllers/surfDataController");
 
 // User routes
 router.post("/register", userController.register); // Register a new user
@@ -29,5 +30,9 @@ router.get("/getRandomBoard", boardController.getRandomBoard); // Get a random b
 router.post("/addSession", sessionController.addSessionToDB); // Add a new session
 router.post("/getSessionsbyUser", sessionController.getSessionsByUser); // Get a user's sessions
 router.post("/getSessionsBySpot", sessionController.getSessionsBySpot); // Get a spot's sessions
+
+// Surf Data routes
+router.post("/getForecastRange", surfDataController.searchForecastsRange); // Get surf data for a session
+router.post("/searchTidesByDay", surfDataController.searchTidesByDay); // Get tide data for a day
 
 module.exports = router;
