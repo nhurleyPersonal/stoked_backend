@@ -29,6 +29,7 @@ const searchForecasts = async (req, res) => {
 };
 
 const searchForecastsRange = async (req, res) => {
+  console.log("Search Forecasts Range", req.body);
   const { _id, startDate, endDate } = req.body;
   const targetStartDate = Math.floor(startDate / 10800) * 10800; // round down to the nearest multiple of 10800
   const targetEndDate = Math.floor(endDate / 10800) * 10800; // round down to the nearest multiple of 10800
@@ -96,6 +97,8 @@ const searchTidesByDayInternal = async (tideStationId, date) => {
 };
 
 const searchTidesByDay = async (req, res) => {
+  console.log("Search Tides Day", req.body);
+
   const { tideStation, date } = req.body;
   if (!tideStationId || !date) {
     return res.status(400).json({
