@@ -40,14 +40,14 @@ const searchForecastsRange = async (req, res) => {
       date: { $gte: targetStartDate, $lte: targetEndDate },
     });
 
+    console.log("forecasts", forecasts);
+
     if (!forecasts) {
       return res.status(404).json({
         message:
           "No forecasts found for this spot for the specified time range.",
       });
     }
-
-    console.log("forecasts", forecasts);
 
     return res.status(200).json({
       status: "ok",
