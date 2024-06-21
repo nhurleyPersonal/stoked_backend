@@ -32,7 +32,14 @@ const searchForecastsRange = async (req, res) => {
   const { _id, startDate, endDate } = req.body;
   const targetStartDate = Math.floor(startDate / 10800) * 10800; // round down to the nearest multiple of 10800
   const targetEndDate = Math.floor(endDate / 10800) * 10800; // round down to the nearest multiple of 10800
-
+  console.log(
+    "searchForecastsRange",
+    _id,
+    startDate,
+    endDate,
+    targetStartDate,
+    targetEndDate
+  );
   try {
     const forecasts = await SurfData.find({
       spotId: _id,
@@ -40,7 +47,7 @@ const searchForecastsRange = async (req, res) => {
     });
     console.log(
       "forecasts",
-      forecasts.slice(0, 10).map((forecast) => forecast.toObject())
+      forecasts.slice(0, 5).map((forecast) => forecast.toObject())
     );
     if (!forecasts) {
       return res.status(404).json({
