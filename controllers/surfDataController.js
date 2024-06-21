@@ -38,7 +38,10 @@ const searchForecastsRange = async (req, res) => {
       spotId: _id,
       date: { $gte: targetStartDate, $lte: targetEndDate },
     });
-    console.log("forecasts", forecasts);
+    console.log(
+      "forecasts",
+      forecasts.slice(0, 10).map((forecast) => forecast.toObject())
+    );
     if (!forecasts) {
       return res.status(404).json({
         message:
