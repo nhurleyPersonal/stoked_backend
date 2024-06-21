@@ -37,7 +37,7 @@ const searchForecastsRange = async (req, res) => {
   try {
     const forecasts = await SurfData.find({
       spotId: _id,
-      // date: { $gte: targetStartDate, $lte: targetEndDate },
+      date: { $gte: targetStartDate, $lte: targetEndDate },
     });
 
     console.log("forecasts", forecasts);
