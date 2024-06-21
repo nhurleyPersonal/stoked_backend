@@ -83,6 +83,7 @@ const searchTidesByDayInternal = async (tideStationId, date) => {
   console.log(
     "searchTidesByDayInternal",
     tideStationId,
+    date,
     startOfDay.toISOString(),
     endOfDay.toISOString()
   );
