@@ -79,10 +79,8 @@ const searchTidesRangeInternal = async (tideStationId, startDate, endDate) => {
 const searchTidesByDayInternal = async (tideStationId, date) => {
   console.log("searchTidesByDayInternal called", tideStationId, date);
 
-  // Ensure date is a Date object
-  if (!(date instanceof Date)) {
-    date = new Date(date);
-  }
+  // Convert date from seconds to milliseconds and ensure it is a Date object
+  date = new Date(date * 1000);
 
   const startOfDay = new Date(date.setHours(0, 0, 0, 0)); // Set to start of the day
   const endOfDay = new Date(date.setHours(23, 59, 59, 999)); // Set to end of the day
