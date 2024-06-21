@@ -82,20 +82,23 @@ const searchTidesByDayInternal = async (tideStationId, date) => {
   // Convert date from seconds to milliseconds and ensure it is a Date object
   date = new Date(date * 1000);
 
-  const startOfDay = new Date(date.setHours(0, 0, 0, 0)); // Set to start of the day
-  const endOfDay = new Date(date.setHours(23, 59, 59, 999)); // Set to end of the day
+  // Format the date to match the 'YYYY-MM-DD' format used in your MongoDB documents
+  const formattedDate = date.toISOString().slice(0, 10); // This will give you 'YYYY-MM-DD'
 
-  console.log("Date range:", startOfDay.toISOString(), endOfDay.toISOString());
+  console.log("Formatted date for query:", formattedDate);
 
   try {
     const tides = await TideData.find({
       stationId: String(tideStationId),
-      date: {
-        $gte: startOfDay,
-        $lte: endOfDay,
-      },
+      date: formattedDate, // Use the formatted date string for querying
     });
 
+    if (!tides.length) {
+      console.log("No tide data found for the given date and tide station ID.");
+      return null;
+    }
+
+    console.log("Tides found:", tides);
     return tides;
   } catch (error) {
     console.log("Error in searchTidesByDayInternal:", error);

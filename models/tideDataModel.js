@@ -7,7 +7,7 @@ const tideEntrySchema = new Schema({
 });
 
 const tideDataSchema = new Schema({
-  date: { type: Date, required: true },
+  date: { type: String, required: true }, // Changed from Date to String
   stationId: { type: String, required: true },
   lastUpdated: { type: Date, required: true },
   tideData: { type: [tideEntrySchema], required: true },
