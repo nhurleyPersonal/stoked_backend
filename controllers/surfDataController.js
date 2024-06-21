@@ -40,8 +40,6 @@ const searchForecastsRange = async (req, res) => {
       date: { $gte: targetStartDate, $lte: targetEndDate },
     });
 
-    console.log("forecasts", forecasts);
-
     if (!forecasts) {
       return res.status(404).json({
         message:
