@@ -77,15 +77,28 @@ const searchTidesRangeInternal = async (tideStationId, startDate, endDate) => {
 };
 
 const searchTidesByDayInternal = async (tideStationId, date) => {
-  console.log("searchTidesByDayInternal", tideStationId, date);
+  const startOfDay = new Date(date.setHours(0, 0, 0, 0)); // Set to start of the day
+  const endOfDay = new Date(date.setHours(23, 59, 59, 999)); // Set to end of the day
+
+  console.log(
+    "searchTidesByDayInternal",
+    tideStationId,
+    startOfDay.toISOString(),
+    endOfDay.toISOString()
+  );
+
   try {
     const tides = await TideData.find({
       stationId: String(tideStationId),
-      date: date,
+      date: {
+        $gte: startOfDay,
+        $lte: endOfDay,
+      },
     });
 
     return tides;
   } catch (error) {
+    console.log("Error in searchTidesByDayInternal:", error);
     return null;
   }
 };
