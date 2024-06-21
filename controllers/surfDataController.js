@@ -29,7 +29,6 @@ const searchForecasts = async (req, res) => {
 };
 
 const searchForecastsRange = async (req, res) => {
-  console.log("Search Forecasts Range", req.body);
   const { _id, startDate, endDate } = req.body;
   const targetStartDate = Math.floor(startDate / 10800) * 10800; // round down to the nearest multiple of 10800
   const targetEndDate = Math.floor(endDate / 10800) * 10800; // round down to the nearest multiple of 10800
@@ -39,7 +38,7 @@ const searchForecastsRange = async (req, res) => {
       spotId: _id,
       date: { $gte: targetStartDate, $lte: targetEndDate },
     });
-
+    console.log("forecasts", forecasts);
     if (!forecasts) {
       return res.status(404).json({
         message:
@@ -77,15 +76,11 @@ const searchTidesRangeInternal = async (tideStationId, startDate, endDate) => {
 };
 
 const searchTidesByDayInternal = async (tideStationId, date) => {
-  console.log("searchTidesByDayInternal called", tideStationId, date);
-
   // Convert date from seconds to milliseconds and ensure it is a Date object
   date = new Date(date * 1000);
 
   // Format the date to match the 'YYYY-MM-DD' format used in your MongoDB documents
   const formattedDate = date.toISOString().slice(0, 10); // This will give you 'YYYY-MM-DD'
-
-  console.log("Formatted date for query:", formattedDate);
 
   try {
     const tides = await TideData.find({
@@ -98,7 +93,6 @@ const searchTidesByDayInternal = async (tideStationId, date) => {
       return null;
     }
 
-    console.log("Tides found:", tides);
     return tides;
   } catch (error) {
     console.log("Error in searchTidesByDayInternal:", error);
@@ -107,8 +101,6 @@ const searchTidesByDayInternal = async (tideStationId, date) => {
 };
 
 const searchTidesByDay = async (req, res) => {
-  console.log("Search Tides Day", req.body);
-
   const { tideStation, date } = req.body;
   if (!tideStation || !date) {
     return res.status(400).json({
@@ -124,8 +116,6 @@ const searchTidesByDay = async (req, res) => {
         message: "No tide data found for the given date and tide station ID.",
       });
     }
-
-    console.log("tides", tides);
 
     res.status(200).json({
       status: "ok",
@@ -143,7 +133,6 @@ const searchTidesByDay = async (req, res) => {
 const searchForecastsRangeInternal = async (spotId, startDate, endDate) => {
   const targetStartDate = Math.floor(startDate / 1000 / 10800) * 10800; // round down to the nearest multiple of 10800
   const targetEndDate = Math.floor(endDate / 1000 / 10800) * 10800; // round down to the nearest multiple of 10800
-  console.log(spotId, startDate, endDate, targetStartDate, targetEndDate);
   try {
     const forecasts = await SurfData.find({
       spotId: new ObjectId(spotId),
