@@ -77,16 +77,17 @@ const searchTidesRangeInternal = async (tideStationId, startDate, endDate) => {
 };
 
 const searchTidesByDayInternal = async (tideStationId, date) => {
+  console.log("searchTidesByDayInternal called", tideStationId, date);
+
+  // Ensure date is a Date object
+  if (!(date instanceof Date)) {
+    date = new Date(date);
+  }
+
   const startOfDay = new Date(date.setHours(0, 0, 0, 0)); // Set to start of the day
   const endOfDay = new Date(date.setHours(23, 59, 59, 999)); // Set to end of the day
 
-  console.log(
-    "searchTidesByDayInternal",
-    tideStationId,
-    date,
-    startOfDay.toISOString(),
-    endOfDay.toISOString()
-  );
+  console.log("Date range:", startOfDay.toISOString(), endOfDay.toISOString());
 
   try {
     const tides = await TideData.find({
