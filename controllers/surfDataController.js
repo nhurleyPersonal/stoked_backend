@@ -115,8 +115,7 @@ const searchTidesByDay = async (req, res) => {
   }
 
   try {
-    const parsedDate = new Date(date);
-    const tides = await searchTidesByDayInternal(tideStation, parsedDate);
+    const tides = await searchTidesByDayInternal(tideStation, date);
 
     if (!tides) {
       return res.status(404).json({
