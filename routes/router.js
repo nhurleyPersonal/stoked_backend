@@ -6,6 +6,11 @@ const spotController = require("../controllers/spotController");
 const boardController = require("../controllers/boardController");
 const sessionController = require("../controllers/sessionController");
 const surfDataController = require("../controllers/surfDataController");
+const {
+  addFavoriteSpot,
+  getFavoriteSpots,
+  removeFavoriteSpot,
+} = require("../controllers/favoriteSpotsController");
 
 // User routes
 router.post("/register", userController.register); // Register a new user
@@ -34,5 +39,10 @@ router.post("/getSessionsBySpot", sessionController.getSessionsBySpot); // Get a
 // Surf Data routes
 router.post("/getForecastRange", surfDataController.searchForecastsRange); // Get surf data for a session
 router.post("/searchTidesByDay", surfDataController.searchTidesByDay); // Get tide data for a day
+
+// Favorite Spots routes
+router.post("/addFavoriteSpot", addFavoriteSpot); // Add a favorite spot
+router.post("/getFavoriteSpots", getFavoriteSpots); // Retrieve favorite spots using POST
+router.post("/removeFavoriteSpot", removeFavoriteSpot); // Remove a favorite spot
 
 module.exports = router;
