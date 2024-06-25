@@ -26,7 +26,7 @@ const getFavoriteSpots = async (req, res) => {
 
   try {
     const favorite = await UserFavoriteSpots.findOne({ userId }).populate(
-      "spotIds"
+      "spot"
     );
     if (!favorite) {
       return res.status(404).json({ error: "No favorite spots found" });

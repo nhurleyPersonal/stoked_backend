@@ -10,7 +10,7 @@ const {
   addFavoriteSpot,
   getFavoriteSpots,
   removeFavoriteSpot,
-} = require("../controllers/favoriteSpotsController");
+} = require("../controllers/userFavoriteSpotsController");
 
 // User routes
 router.post("/register", userController.register); // Register a new user
