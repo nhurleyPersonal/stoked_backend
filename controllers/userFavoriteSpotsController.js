@@ -27,8 +27,8 @@ const getFavoriteSpots = async (req, res) => {
 
   try {
     const favorite = await UserFavoriteSpots.findOne({ userId }).populate(
-      "spot"
-    );
+      "spotIds"
+    ); // Changed from "spot" to "spotIds" to match the field name in the schema
     if (!favorite) {
       return res.status(404).json({ error: "No favorite spots found" });
     }
