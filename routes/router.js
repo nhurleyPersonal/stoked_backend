@@ -16,7 +16,6 @@ router.post("/searchUsers", userController.searchUsers); // Search for users
 
 // Spot routes
 router.post("/addSpot", spotController.addSpot); // Add a new spot
-router.post("/getFavoriteSpots", spotController.getUserFavoriteSpots); // Get a user's favorite spots
 router.post("/getRecentSpots", spotController.getUserRecentSpots); // Get a user's recent spots
 router.post("/searchSpots", spotController.searchSpots); // Search for spots
 router.get("/getRandomSpot", spotController.getRandomSpot); // Get a random spot
@@ -43,8 +42,6 @@ router.post(
   "/removeFavoriteSpot",
   userFavoriteSpotsController.removeFavoriteSpot
 ); // Remove a favorite spot
-
-console.log("ROUTER HERE!");
 
 // Export the router if not already exported
 module.exports = router;

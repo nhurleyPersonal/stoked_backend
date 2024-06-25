@@ -22,26 +22,21 @@ const addFavoriteSpot = async (req, res) => {
 };
 
 const getFavoriteSpots = async (req, res) => {
-  try {
-    console.log("HERE!!");
-    console.log("Request:", req.body);
-    const { userId } = req.body;
+  console.log("Request:", req.body);
+  const { userId } = req.body;
 
-    try {
-      const favorite = await UserFavoriteSpots.findOne({ userId }).populate(
-        "spot"
-      );
-      if (!favorite) {
-        return res.status(404).json({ error: "No favorite spots found" });
-      }
-      console.log("Favorite spots:", favorite);
-      res.status(200).json({ favoriteSpots: favorite.spotIds });
-    } catch (err) {
-      console.error("Error:", err);
-      res.status(500).json({ error: err });
+  try {
+    const favorite = await UserFavoriteSpots.findOne({ userId }).populate(
+      "spot"
+    );
+    if (!favorite) {
+      return res.status(404).json({ error: "No favorite spots found" });
     }
+    console.log("Favorite spots:", favorite);
+    res.status(200).json({ favoriteSpots: favorite.spotIds });
   } catch (err) {
-    console.log(err);
+    console.error("Error:", err);
+    res.status(500).json({ error: err });
   }
 };
 
