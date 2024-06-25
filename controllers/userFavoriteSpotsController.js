@@ -31,6 +31,7 @@ const getFavoriteSpots = async (req, res) => {
     if (!favorite) {
       return res.status(404).json({ error: "No favorite spots found" });
     }
+    console.log("Favorite spots:", favorite);
     res.status(200).json({ favoriteSpots: favorite.spotIds });
   } catch (err) {
     console.error("Error:", err);
