@@ -22,7 +22,6 @@ const addFavoriteSpot = async (req, res) => {
 };
 
 const getFavoriteSpots = async (req, res) => {
-  console.log("Request:", req.body);
   const { userId } = req.body;
 
   try {
@@ -41,6 +40,7 @@ const getFavoriteSpots = async (req, res) => {
 };
 
 const removeFavoriteSpot = async (req, res) => {
+  console.log("Request:", req.body);
   const { userId, spotId } = req.body;
 
   try {
@@ -55,6 +55,7 @@ const removeFavoriteSpot = async (req, res) => {
     if (index > -1) {
       favorite.spotIds.splice(index, 1);
       await favorite.save();
+      console.log("Favorite spots:", favorite);
       res
         .status(200)
         .json({ message: "Favorite spot removed successfully", favorite });
