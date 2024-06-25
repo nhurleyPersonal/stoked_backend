@@ -22,6 +22,7 @@ const addFavoriteSpot = async (req, res) => {
 };
 
 const getFavoriteSpots = async (req, res) => {
+  console.log("HERE!!");
   console.log("Request:", req.body);
   const { userId } = req.body;
 
