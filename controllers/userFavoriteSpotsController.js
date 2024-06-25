@@ -24,6 +24,8 @@ const addFavoriteSpot = async (req, res) => {
 const getFavoriteSpots = async (req, res) => {
   const { userId } = req.body;
 
+  console.log("User ID:", userId);
+
   try {
     const favorite = await UserFavoriteSpots.findOne({ userId }).populate(
       "spot"
