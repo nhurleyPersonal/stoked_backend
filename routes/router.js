@@ -44,7 +44,10 @@ router.post(
   userFavoriteSpotsController.removeFavoriteSpot
 ); // Remove a favorite spot
 
-router.post("/getFavoriteSpotsFeed", feedController.getFeedForUser);
+router.post(
+  "/getFavoriteSpotsFeed",
+  feedController.getFavoriteSpotsFeedForUser
+);
 
 // Export the router if not already exported
 module.exports = router;
