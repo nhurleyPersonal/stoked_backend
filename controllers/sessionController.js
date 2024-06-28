@@ -140,7 +140,6 @@ const getSessionsByUser = async (req, res) => {
 };
 
 const getSessionsBySpot = async (req, res) => {
-  console.log("getSessionsBySpot", req.body);
   const { _id } = req.body;
   try {
     // Find all sessions associated with the spot

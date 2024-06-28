@@ -19,8 +19,10 @@ const getFavoriteSpotsFeedForUser = async (req, res) => {
     const sessionsPromises = favoriteSpots.spotIds.map((spot) =>
       Session.find({ spot: spot._id })
         .populate("spot")
+        .populate("board")
         .populate("surfData")
         .populate("tideData")
+        .populate({ path: "user", select: "-password" }) // Exclude password field
         .sort({ sessionDatetime: -1, overallScore: -1 })
         .skip(skip)
         .limit(limit)
@@ -29,13 +31,23 @@ const getFavoriteSpotsFeedForUser = async (req, res) => {
     const sessionsPerSpot = await Promise.all(sessionsPromises);
     const allSessions = [].concat(...sessionsPerSpot);
 
+    // Transform sessions to include additional details or modifications
+    // const sessionsWithSpotDetails = allSessions.map(session => {
+    //   const sessionObject = session.toObject(); // Convert Mongoose document to a plain JavaScript object
+    //   // Example modification: add a custom property or modify an existing one
+    //   sessionObject.customProperty = "Custom Value"; // This is just an example
+    //   return sessionObject;
+    // });
+
     allSessions.sort((a, b) => {
       return (
         b.sessionDatetime - a.sessionDatetime || b.overallScore - a.overallScore
       );
     });
 
-    res.status(200).json({ status: "ok", sessions: allSessions, page });
+    res
+      .status(200)
+      .json({ status: "ok", sessions: sessionsWithSpotDetails, page });
   } catch (err) {
     console.error("Error:", err);
     res.status(500).json({ status: "error", message: err.message });
