@@ -7,6 +7,7 @@ const boardController = require("../controllers/boardController");
 const sessionController = require("../controllers/sessionController");
 const surfDataController = require("../controllers/surfDataController");
 const userFavoriteSpotsController = require("../controllers/userFavoriteSpotsController");
+const feedController = require("../controllers/feedController");
 
 // User routes
 router.post("/register", userController.register); // Register a new user
@@ -42,6 +43,8 @@ router.post(
   "/removeFavoriteSpot",
   userFavoriteSpotsController.removeFavoriteSpot
 ); // Remove a favorite spot
+
+router.post("/getFavoriteSpotsFeed", feedController.getFeedForUser);
 
 // Export the router if not already exported
 module.exports = router;
