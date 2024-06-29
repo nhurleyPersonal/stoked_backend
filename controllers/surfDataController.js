@@ -86,6 +86,7 @@ const searchTidesRangeInternal = async (tideStationId, startDate, endDate) => {
 };
 
 const searchTidesByDayInternal = async (tideStationId, date) => {
+  console.log("searchTidesByDayInternal", tideStationId, date);
   // Convert date from seconds to milliseconds and ensure it is a Date object
   date = new Date(date * 1000);
 
@@ -112,6 +113,7 @@ const searchTidesByDayInternal = async (tideStationId, date) => {
 
 const searchTidesByDay = async (req, res) => {
   const { tideStation, date } = req.body;
+  console.log("searchTidesByDay", tideStation, date);
   if (!tideStation || !date) {
     return res.status(400).json({
       message: "Missing required parameters: tideStationId or date.",
