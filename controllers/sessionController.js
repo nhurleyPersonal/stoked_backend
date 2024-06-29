@@ -67,7 +67,10 @@ const addSessionToDB = async (req, res) => {
 
     // Pass the tideStation value to the searchTidesByDayInternal function
     const tideDataDocument =
-      (await searchTidesByDayInternal(tideStation, startDate)) || [];
+      (await searchTidesByDayInternal(
+        tideStation,
+        startDate.getTime() / 1000
+      )) || [];
 
     console.log(tideDataDocument);
 
