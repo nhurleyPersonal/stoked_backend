@@ -5,7 +5,7 @@ const ObjectId = mongoose.Types.ObjectId;
 
 const searchForecasts = async (req, res) => {
   const { _id, date } = req.body;
-  const targetDate = Math.floor(date / 10800) * 10800; // round down to the nearest multiple of 10800
+  const targetDate = Math.floor(date / 3600) * 3600; // round down to the nearest multiple of 10800
 
   try {
     const forecasts = await SurfData.find({
@@ -30,8 +30,8 @@ const searchForecasts = async (req, res) => {
 
 const searchForecastsRange = async (req, res) => {
   const { _id, startDate, endDate } = req.body;
-  const targetStartDate = Math.floor(startDate / 10800) * 10800; // round down to the nearest multiple of 10800
-  const targetEndDate = Math.floor(endDate / 10800) * 10800; // round down to the nearest multiple of 10800
+  const targetStartDate = Math.floor(startDate / 3600) * 3600; // round down to the nearest multiple of 10800
+  const targetEndDate = Math.floor(endDate / 3600) * 3600; // round down to the nearest multiple of 10800
   console.log(
     "searchForecastsRange",
     _id,
@@ -141,8 +141,8 @@ const searchTidesByDay = async (req, res) => {
 };
 
 const searchForecastsRangeInternal = async (spotId, startDate, endDate) => {
-  const targetStartDate = Math.floor(startDate / 1000 / 10800) * 10800; // round down to the nearest multiple of 10800
-  const targetEndDate = Math.floor(endDate / 1000 / 10800) * 10800; // round down to the nearest multiple of 10800
+  const targetStartDate = Math.floor(startDate / 1000 / 3600) * 3600; // round down to the nearest multiple of 10800
+  const targetEndDate = Math.floor(endDate / 1000 / 3600) * 3600; // round down to the nearest multiple of 10800
   try {
     const forecasts = await SurfData.find({
       spotId: new ObjectId(spotId),
@@ -159,7 +159,7 @@ const searchForecastsRangeInternal = async (spotId, startDate, endDate) => {
 };
 
 const searchForecastsInternal = async (spotId, date) => {
-  const targetDate = Math.floor(date / 10800) * 10800; // round down to the nearest multiple of 10800
+  const targetDate = Math.floor(date / 3600) * 3600; // round down to the nearest multiple of 10800
 
   try {
     const forecasts = await SurfData.find({
