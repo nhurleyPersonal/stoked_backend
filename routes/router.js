@@ -8,7 +8,7 @@ const sessionController = require("../controllers/sessionController");
 const surfDataController = require("../controllers/surfDataController");
 const userFavoriteSpotsController = require("../controllers/userFavoriteSpotsController");
 const feedController = require("../controllers/feedController");
-const verifyToken = require("../middleware/authMiddleware"); // Import the middleware
+const verifyToken = require("../middlewares/authMiddleware"); // Import the middleware
 
 // Routes that do not require authentication
 router.post("/register", userController.register); // Register a new user
