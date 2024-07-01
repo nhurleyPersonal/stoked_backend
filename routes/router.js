@@ -8,12 +8,22 @@ const sessionController = require("../controllers/sessionController");
 const surfDataController = require("../controllers/surfDataController");
 const userFavoriteSpotsController = require("../controllers/userFavoriteSpotsController");
 const feedController = require("../controllers/feedController");
+const verifyToken = require("../middleware/authMiddleware"); // Import the middleware
 
-// User routes
+// Routes that do not require authentication
 router.post("/register", userController.register); // Register a new user
 router.post("/login", userController.login); // Log in an existing user
+
+// Apply the verifyToken middleware to all routes that require authentication
+router.use(verifyToken);
+
+// User routes
 router.get("/me", userController.getUser); // Get the current user's details
 router.post("/searchUsers", userController.searchUsers); // Search for users
+router.post("/updateEmail", userController.updateUserEmail); // Update user email
+router.post("/updatePassword", userController.updateUserPassword); // Update user password
+router.post("/updateBio", userController.updateUserBio); // Update user bio
+router.post("/updateHomeBreak", userController.updateUserHomeBreak); // Update user home break
 
 // Spot routes
 router.post("/addSpot", spotController.addSpot); // Add a new spot
@@ -43,11 +53,10 @@ router.post(
   "/removeFavoriteSpot",
   userFavoriteSpotsController.removeFavoriteSpot
 ); // Remove a favorite spot
-
 router.post(
   "/getFavoriteSpotsFeed",
   feedController.getFavoriteSpotsFeedForUser
-);
+); // Get favorite spots feed
 
 // Export the router if not already exported
 module.exports = router;

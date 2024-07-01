@@ -2,14 +2,14 @@ const UserFavoriteSpots = require("../models/userFavoriteSpotsModel");
 const Session = require("../models/sessionModel");
 
 const getFavoriteSpotsFeedForUser = async (req, res) => {
-  const { userId, page } = req.body;
+  const { page } = req.body;
   const limit = parseInt(req.query.limit) || 10; // Default to 10 items per page if not specified
   const skip = (page - 1) * limit;
 
   try {
-    const favoriteSpots = await UserFavoriteSpots.findOne({ userId }).populate(
-      "spotIds"
-    );
+    const favoriteSpots = await UserFavoriteSpots.findOne({
+      userId: req.userId,
+    }).populate("spotIds");
     if (!favoriteSpots) {
       return res
         .status(404)

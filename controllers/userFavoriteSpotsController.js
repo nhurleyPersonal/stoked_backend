@@ -1,12 +1,12 @@
 const UserFavoriteSpots = require("../models/userFavoriteSpotsModel");
 
 const addFavoriteSpot = async (req, res) => {
-  const { userId, spotId } = req.body;
+  const { spotId } = req.body;
 
   try {
-    let favorite = await UserFavoriteSpots.findOne({ userId });
+    let favorite = await UserFavoriteSpots.findOne({ userId: req.userId });
     if (!favorite) {
-      favorite = new UserFavoriteSpots({ userId, spotIds: [] });
+      favorite = new UserFavoriteSpots({ userId: req.userId, spotIds: [] });
     }
     if (!favorite.spotIds.includes(spotId)) {
       favorite.spotIds.push(spotId);
@@ -22,12 +22,10 @@ const addFavoriteSpot = async (req, res) => {
 };
 
 const getFavoriteSpots = async (req, res) => {
-  const { userId } = req.body;
-
   try {
-    const favorite = await UserFavoriteSpots.findOne({ userId }).populate(
-      "spotIds"
-    ); // Changed from "spot" to "spotIds" to match the field name in the schema
+    const favorite = await UserFavoriteSpots.findOne({
+      userId: req.userId,
+    }).populate("spotIds");
     if (!favorite) {
       return res.status(404).json({ error: "No favorite spots found" });
     }
@@ -40,11 +38,10 @@ const getFavoriteSpots = async (req, res) => {
 };
 
 const removeFavoriteSpot = async (req, res) => {
-  console.log("Request:", req.body);
-  const { userId, spotId } = req.body;
+  const { spotId } = req.body;
 
   try {
-    const favorite = await UserFavoriteSpots.findOne({ userId });
+    const favorite = await UserFavoriteSpots.findOne({ userId: req.userId });
     if (!favorite) {
       return res
         .status(404)

@@ -211,9 +211,91 @@ const searchUsers = async (req, res) => {
   }
 };
 
+const updateUserEmail = async (req, res) => {
+  const { newEmail } = req.body;
+
+  try {
+    const user = await User.findById(req.userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    user.email = newEmail.toLowerCase();
+    await user.save();
+
+    res.status(200).json({ message: "Email updated successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+const updateUserPassword = async (req, res) => {
+  const { newPassword } = req.body;
+
+  try {
+    const user = await User.findById(req.userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const hash = await bcrypt.hash(newPassword, saltRounds);
+    const authData = await AuthTable.findOne({ email: user.email });
+    authData.password = hash;
+    await authData.save();
+
+    res.status(200).json({ message: "Password updated successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+const updateUserBio = async (req, res) => {
+  const { newBio } = req.body;
+
+  try {
+    const user = await User.findById(req.userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    user.tagline = newBio;
+    await user.save();
+
+    res.status(200).json({ message: "Bio updated successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+const updateUserHomeBreak = async (req, res) => {
+  const { newHomeBreakId } = req.body;
+
+  try {
+    const user = await User.findById(req.userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    user.homeSpot = newHomeBreakId;
+    await user.save();
+
+    res.status(200).json({ message: "Home break updated successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
 module.exports = {
   register,
   login,
   getUser,
   searchUsers,
+  updateUserEmail,
+  updateUserPassword,
+  updateUserBio,
+  updateUserHomeBreak,
 };

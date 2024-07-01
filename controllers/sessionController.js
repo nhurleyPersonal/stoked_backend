@@ -26,21 +26,10 @@ const addSessionToDB = async (req, res) => {
     waveHeight,
     timeBetweenWaves,
     extraNotes,
-    user,
   } = req.body;
 
   try {
-    // Verify the JWT
-    const token = req.headers.authorization.split(" ")[1]; // Assumes 'Bearer <token>' format
-    const decodedToken = jwt.verify(token, secret);
-
-    // Check if the user in the JWT is the same as the user in the session
-    if (decodedToken.id !== user._id) {
-      console.log("Unauthorized");
-      return res
-        .status(500)
-        .json({ status: "error", code: 403, message: "Unauthorized" });
-    }
+    const userId = req.userId; // Use userId from middleware
 
     const startDate = new Date(sessionDatetime);
     const endDate = new Date(
@@ -95,7 +84,7 @@ const addSessionToDB = async (req, res) => {
       waveHeight,
       timeBetweenWaves,
       extraNotes,
-      user,
+      user: userId, // Use userId from middleware
     });
 
     // Save the session to the database
