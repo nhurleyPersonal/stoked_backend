@@ -24,6 +24,7 @@ router.post("/updateEmail", userController.updateUserEmail); // Update user emai
 router.post("/updatePassword", userController.updateUserPassword); // Update user password
 router.post("/updateBio", userController.updateUserBio); // Update user bio
 router.post("/updateHomeBreak", userController.updateUserHomeBreak); // Update user home break
+router.post("/updateUsername", userController.updateUsername); // Update user username
 
 // Spot routes
 router.post("/addSpot", spotController.addSpot); // Add a new spot

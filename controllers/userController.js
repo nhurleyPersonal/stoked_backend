@@ -220,10 +220,24 @@ const updateUserEmail = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
+    // Update email in the User collection
     user.email = newEmail.toLowerCase();
     await user.save();
 
-    res.status(200).json({ message: "Email updated successfully" });
+    // Update email in the AuthTable collection
+    const authData = await AuthTable.findOne({ userId: req.userId });
+    if (!authData) {
+      return res.status(404).json({ message: "Authentication data not found" });
+    }
+    authData.email = newEmail.toLowerCase();
+    await authData.save();
+
+    // Generate a new JWT for the user after email update
+    const newToken = jwt.sign({ userId: user._id }, secret);
+
+    res
+      .status(200)
+      .json({ message: "Email updated successfully", token: newToken });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
@@ -244,7 +258,12 @@ const updateUserPassword = async (req, res) => {
     authData.password = hash;
     await authData.save();
 
-    res.status(200).json({ message: "Password updated successfully" });
+    // Generate a new JWT for the user after password update
+    const newToken = jwt.sign({ userId: user._id }, secret);
+
+    res
+      .status(200)
+      .json({ message: "Password updated successfully", token: newToken });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
@@ -259,9 +278,11 @@ const updateUserBio = async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
+    console.log("new bio", newBio);
 
     user.tagline = newBio;
     await user.save();
+    console.log("Got em changed", newBio);
 
     res.status(200).json({ message: "Bio updated successfully" });
   } catch (error) {
@@ -289,6 +310,33 @@ const updateUserHomeBreak = async (req, res) => {
   }
 };
 
+const updateUsername = async (req, res) => {
+  const { newUsername } = req.body;
+
+  try {
+    const user = await User.findById(req.userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Check if the new username already exists
+    const existingUser = await User.findOne({ username: newUsername });
+    if (existingUser) {
+      return res.status(409).json({ message: "Username is already taken" });
+    }
+    console.log("new username", newUsername);
+
+    user.username = newUsername;
+    await user.save();
+    console.log("Got em changed", newUsername);
+
+    res.status(200).json({ message: "Username updated successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
 module.exports = {
   register,
   login,
@@ -298,4 +346,5 @@ module.exports = {
   updateUserPassword,
   updateUserBio,
   updateUserHomeBreak,
+  updateUsername,
 };
