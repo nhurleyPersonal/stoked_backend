@@ -159,7 +159,7 @@ const getUser = async (req, res) => {
     }
 
     // Send the user data
-    res.json(user);
+    res.json({ user: user });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
