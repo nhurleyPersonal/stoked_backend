@@ -90,10 +90,15 @@ const addSessionToDB = async (req, res) => {
     // Save the session to the database
     const savedSession = await session.save();
 
+    // Populate the spot and user fields
+    const populatedSession = await Session.findById(savedSession._id)
+      .populate("spot")
+      .populate("user"); // Exclude password field
+
     let response = {
       status: "ok",
       message: "Session added successfully",
-      session: savedSession,
+      session: populatedSession,
     };
 
     // Respond with a success message
