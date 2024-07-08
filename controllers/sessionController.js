@@ -116,9 +116,7 @@ const getSessionsByUser = async (req, res) => {
       .populate("user"); // Exclude password field
 
     // Respond with the sessions
-    res
-      .status(200)
-      .json({ status: "ok", message: "ok", sessions: sessionsWithUsername });
+    res.status(200).json({ status: "ok", message: "ok", sessions: sessions });
   } catch (err) {
     console.error("Error:", err);
     res.status(500).json({ status: "error", message: err });
